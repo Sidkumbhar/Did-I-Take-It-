@@ -1,0 +1,89 @@
+@import "tailwindcss";
+
+@theme {
+  --font-headline: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-body: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-label: "Inter", ui-sans-serif, system-ui, sans-serif;
+
+  --color-primary: #005da7;
+  --color-primary-container: #2976c7;
+  --color-on-primary: #ffffff;
+  
+  --color-secondary: #006d36;
+  --color-secondary-container: #83fba5;
+  --color-on-secondary-container: #00743a;
+
+  --color-tertiary: #7f5300;
+  --color-tertiary-fixed-dim: #ffb953;
+
+  --color-error: #ba1a1a;
+  --color-error-container: #ffdad6;
+  --color-on-error-container: #93000a;
+
+  --color-background: #f7f9fc;
+  --color-surface-container-low: #f2f4f7;
+  --color-surface-container-lowest: #ffffff;
+  --color-surface-container-high: #e8eaed;
+  --color-surface-container-highest: #e0e3e6;
+  
+  --color-on-surface: #191c1e;
+  --color-on-surface-variant: #414751;
+  
+  --color-outline-variant: #c1c7d3;
+}
+
+@layer utilities {
+  .glass-effect {
+    background: rgba(255, 255, 255, 0.72);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.4);
+  }
+
+  .bg-gradient-primary {
+    background: linear-gradient(135deg, #005da7 0%, #2976c7 100%);
+  }
+
+  .bg-gradient-admin {
+    background: linear-gradient(135deg, #6d28d9 0%, #8b5cf6 100%);
+  }
+
+  /* The "No-Line" Rule tonal layering */
+  .tonal-lift {
+    @apply bg-surface-container-lowest shadow-[0_40px_40px_-20px_rgba(25,28,30,0.05)];
+  }
+
+  .auth-gradient {
+    background: linear-gradient(135deg, #005da7 0%, #006d36 50%, #2976c7 100%);
+    background-size: 200% 200%;
+    animation: gradientShift 8s ease infinite;
+  }
+}
+
+@keyframes gradientShift {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
+body {
+  @apply bg-background text-on-surface font-body antialiased selection:bg-primary/20;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  @apply font-headline tracking-[-0.02em];
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: #c1c7d3;
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #a0a6b4;
+}
