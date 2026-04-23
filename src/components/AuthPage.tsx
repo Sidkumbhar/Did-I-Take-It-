@@ -169,13 +169,6 @@ export const AuthPage = ({ onLogin, onRegister, error, isLoading }: Props) => {
             </button>
           </form>
 
-          {mode === 'login' && (
-            <div className="mt-6 pt-6 border-t border-white/10 text-center">
-              <p className="text-white/30 text-xs font-medium">
-                Demo Admin: <span className="text-white/50">admin@diditakeit.com / admin123</span>
-              </p>
-            </div>
-          )}
         </div>
       </motion.div>
     </div>
