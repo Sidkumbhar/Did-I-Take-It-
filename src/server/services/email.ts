@@ -52,7 +52,7 @@ async function logNotification(userId: string, type: string, subject: string, bo
   }
 }
 
-export async function sendEmail(to: string, subject: string, html: string): Promise<{ sent: boolean, etherealUrl?: string }> {
+export async function sendEmail(to: string, subject: string, html: string, attachments?: any[]): Promise<{ sent: boolean, etherealUrl?: string }> {
   if (!transporter) {
     console.log(`📧 [SIMULATED] Email to ${to}: ${subject}`);
     return { sent: false };
@@ -64,6 +64,7 @@ export async function sendEmail(to: string, subject: string, html: string): Prom
       to,
       subject,
       html,
+      attachments,
     });
     
     // Check if it's an Ethereal email and print the preview URL
@@ -112,8 +113,8 @@ export async function sendWelcomeEmail(userId: string, email: string, name: stri
     </div>
   `;
 
-  const sent = await sendEmail(email, subject, html);
-  await logNotification(userId, 'welcome', subject, html, sent ? 'sent' : 'failed');
+  const result = await sendEmail(email, subject, html);
+  await logNotification(userId, 'welcome', subject, html, result.sent ? 'sent' : 'failed');
 }
 
 export async function sendDoseReminder(userId: string, email: string, userName: string, medName: string, dosage: string, time: string) {
@@ -139,8 +140,8 @@ export async function sendDoseReminder(userId: string, email: string, userName: 
     </div>
   `;
 
-  const sent = await sendEmail(email, subject, html);
-  await logNotification(userId, 'dose_reminder', subject, html, sent ? 'sent' : 'failed');
+  const result = await sendEmail(email, subject, html);
+  await logNotification(userId, 'dose_reminder', subject, html, result.sent ? 'sent' : 'failed');
 }
 
 export async function sendMissedAlert(userId: string, email: string, userName: string, medName: string, dosage: string, time: string) {
@@ -166,8 +167,8 @@ export async function sendMissedAlert(userId: string, email: string, userName: s
     </div>
   `;
 
-  const sent = await sendEmail(email, subject, html);
-  await logNotification(userId, 'missed_alert', subject, html, sent ? 'sent' : 'failed');
+  const result = await sendEmail(email, subject, html);
+  await logNotification(userId, 'missed_alert', subject, html, result.sent ? 'sent' : 'failed');
 }
 
 export async function sendDoseTakenEmail(userId: string, email: string, userName: string, medName: string, dosage: string, time: string) {

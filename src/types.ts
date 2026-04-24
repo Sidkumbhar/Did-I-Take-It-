@@ -40,7 +40,7 @@ export interface DoseLog {
 export interface NotificationLog {
   _id: string;
   userId: string | { name: string; email: string };
-  type: 'dose_reminder' | 'missed_alert' | 'welcome';
+  type: 'dose_reminder' | 'missed_alert' | 'welcome' | 'dose_taken';
   subject: string;
   status: 'sent' | 'failed';
   sentAt: string;
@@ -67,5 +67,17 @@ export interface AdminUser extends UserData {
   createdAt: string;
 }
 
-export type View = 'dashboard' | 'medications' | 'schedule' | 'history' | 'settings';
+export interface SymptomLog {
+  _id: string;
+  userId: string;
+  rawText: string;
+  symptoms: Array<{ name: string; severity: string }>;
+  timing: string | null;
+  triggerMedication: string | null;
+  medicationId: string | { name: string; dosage: string } | null;
+  loggedAt: string;
+  createdAt?: string;
+}
+
+export type View = 'dashboard' | 'medications' | 'schedule' | 'history' | 'settings' | 'voice-log' | 'reports';
 export type AdminView = 'admin-dashboard' | 'admin-users' | 'admin-medications' | 'admin-notifications' | 'admin-settings';

@@ -1,4 +1,4 @@
-import { Medication, UserData, DoseLog, NotificationLog, AdminStats, AdminUser } from '../types';
+import { Medication, UserData, DoseLog, NotificationLog, AdminStats, AdminUser, SymptomLog } from '../types';
 
 const API_BASE = '/api';
 
@@ -142,6 +142,45 @@ export const api = {
 
   async getAdminNotifications(): Promise<NotificationLog[]> {
     const res = await fetch(`${API_BASE}/admin/notifications`, { headers: authHeaders() });
+    return handleResponse(res);
+  },
+
+  // --- AI Doctor Chat ---
+  async chatWithDoctor(message: string, history: Array<{ role: string; text: string }>): Promise<{ response: string }> {
+    const res = await fetch(`${API_BASE}/voice-log/chat`, {
+      method: 'POST',
+      headers: authHeaders(),
+      body: JSON.stringify({ message, history }),
+    });
+    return handleResponse(res);
+  },
+
+  async chatWithDoctorAudio(audio: string, mimeType: string, history: Array<{ role: string; text: string }>): Promise<{ response: string; transcript: string }> {
+    const res = await fetch(`${API_BASE}/voice-log/audio`, {
+      method: 'POST',
+      headers: authHeaders(),
+      body: JSON.stringify({ audio, mimeType, history }),
+    });
+    return handleResponse(res);
+  },
+
+  async getSymptomLogs(): Promise<SymptomLog[]> {
+    const res = await fetch(`${API_BASE}/voice-log`, { headers: authHeaders() });
+    return handleResponse(res);
+  },
+
+  // --- Reports ---
+  async getReportData(days: number | 'all' = 30): Promise<{ summary: string; chartData: any[] }> {
+    const res = await fetch(`${API_BASE}/reports/data?days=${days}`, { headers: authHeaders() });
+    return handleResponse(res);
+  },
+
+  async emailReportPdf(pdfBase64: string): Promise<{ success: boolean; etherealUrl?: string }> {
+    const res = await fetch(`${API_BASE}/reports/email`, {
+      method: 'POST',
+      headers: authHeaders(),
+      body: JSON.stringify({ pdfBase64 }),
+    });
     return handleResponse(res);
   },
 };

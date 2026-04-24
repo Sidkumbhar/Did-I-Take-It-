@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { 
   LayoutDashboard, Pill, CalendarDays, BarChart3, Settings, Search, Bell, Plus, 
-  CheckCircle2, Clock, AlertCircle, ShieldCheck, LogOut, Users, Mail, Activity
+  CheckCircle2, Clock, AlertCircle, ShieldCheck, LogOut, Users, Mail, Activity, Mic, Stethoscope, FileText
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { View, AdminView, Medication, UserData, DoseLog } from './types';
@@ -17,6 +17,8 @@ import { AdminDashboardView } from './components/AdminDashboardView';
 import { AdminUsersView } from './components/AdminUsersView';
 import { AdminMedicationsView } from './components/AdminMedicationsView';
 import { AdminNotificationsView } from './components/AdminNotificationsView';
+import { VoiceLogView } from './components/VoiceLogView';
+import { ReportView } from './components/ReportView';
 
 // --- Sidebar ---
 const UserSidebar = ({ currentView, setView, user, onLogout }: { currentView: View, setView: (v: View) => void, user: UserData, onLogout: () => void }) => {
@@ -24,6 +26,8 @@ const UserSidebar = ({ currentView, setView, user, onLogout }: { currentView: Vi
     { id: 'dashboard' as View, label: 'Dashboard', icon: LayoutDashboard },
     { id: 'medications' as View, label: 'My Medications', icon: Pill },
     { id: 'schedule' as View, label: 'Schedule', icon: CalendarDays },
+    { id: 'voice-log' as View, label: 'Dr. AI', icon: Stethoscope },
+    { id: 'reports' as View, label: 'Doctor Reports', icon: FileText },
     { id: 'history' as View, label: 'History', icon: BarChart3 },
     { id: 'settings' as View, label: 'Settings', icon: Settings },
   ];
@@ -290,6 +294,8 @@ export default function App() {
       case 'dashboard': return <DashboardView medications={medications} onAddClick={openAddModal} onLog={handleLogDose} user={user} />;
       case 'medications': return <MedicationsView medications={medications} onAddClick={openAddModal} onEditClick={openEditModal} />;
       case 'schedule': return <ScheduleView medications={medications} onLog={handleLogDose} onUpdateTime={handleUpdateDoseTime} />;
+      case 'voice-log': return <VoiceLogView />;
+      case 'reports': return <ReportView />;
       case 'history': return <HistoryView />;
       case 'settings': return <SettingsView user={user} onUpdateProfile={async (data) => { try { const res = await api.updateProfile(data); setUser(res.user); addToast('Settings saved!'); } catch(e) { console.error(e); } }} />;
       default: return <DashboardView medications={medications} onAddClick={openAddModal} onLog={handleLogDose} user={user} />;
@@ -312,7 +318,7 @@ export default function App() {
       </div>
       <div className="flex-1 flex flex-col h-full overflow-hidden">
         <TopBar />
-        <main className="flex-1 overflow-y-auto px-6 sm:px-10">
+        <main className={`flex-1 ${view === 'voice-log' ? 'overflow-hidden' : 'overflow-y-auto'} px-6 sm:px-10`}>
           <AnimatePresence mode="wait"><React.Fragment key={view}>{renderUserView()}</React.Fragment></AnimatePresence>
         </main>
         <MedicationModal isOpen={isModalOpen} mode={modalMode} initialData={editingMedication} onClose={() => setIsModalOpen(false)} onSave={modalMode === 'add' ? handleAddMedication : handleUpdateMedication} />

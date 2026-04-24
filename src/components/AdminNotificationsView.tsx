@@ -19,6 +19,7 @@ export const AdminNotificationsView = () => {
     dose_reminder: { label: 'Reminder', color: 'bg-blue-500/20 text-blue-300' },
     missed_alert: { label: 'Missed', color: 'bg-red-500/20 text-red-300' },
     welcome: { label: 'Welcome', color: 'bg-emerald-500/20 text-emerald-300' },
+    dose_taken: { label: 'Dose Taken', color: 'bg-purple-500/20 text-purple-300' },
   };
 
   if (loading) return <div className="flex items-center justify-center h-[60vh]"><div className="w-12 h-12 border-4 border-purple-400 border-t-transparent rounded-full animate-spin" /></div>;

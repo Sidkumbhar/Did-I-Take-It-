@@ -51,7 +51,11 @@ export function startScheduler() {
             const doseMinutes = doseH * 60 + doseM;
             const currentMinutes = now.getHours() * 60 + now.getMinutes();
 
-            if (currentMinutes - doseMinutes >= 30 && currentMinutes - doseMinutes < 31) {
+            // Handle midnight wraparound (e.g. dose at 23:45, current time 00:15)
+            let diff = currentMinutes - doseMinutes;
+            if (diff < 0) diff += 1440; // 24 * 60 = 1440 minutes in a day
+
+            if (diff >= 30 && diff < 31) {
               const missedKey = `missed-${doseKey}`;
               if (!remindedDoses.has(missedKey)) {
                 remindedDoses.add(missedKey);

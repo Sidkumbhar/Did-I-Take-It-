@@ -14,7 +14,8 @@ const __dirname = path.dirname(__filename);
 const app = express();
 const PORT = 3000;
 
-app.use(express.json());
+app.use(express.json({ limit: '50mb' }));
+app.use(express.urlencoded({ limit: '50mb', extended: true }));
 
 // Health check
 app.get('/api/health', (req, res) => {
@@ -78,10 +79,14 @@ if (dbConnected) {
 const authRoutes = (await import('./src/server/routes/auth.js')).default;
 const medicationRoutes = (await import('./src/server/routes/medications.js')).default;
 const adminRoutes = (await import('./src/server/routes/admin.js')).default;
+const voiceLogRoutes = (await import('./src/server/routes/voicelog.js')).default;
+const reportRoutes = (await import('./src/server/routes/reports.js')).default;
 
 app.use('/api/auth', authRoutes);
 app.use('/api/medications', medicationRoutes);
 app.use('/api/admin', adminRoutes);
+app.use('/api/voice-log', voiceLogRoutes);
+app.use('/api/reports', reportRoutes);
 
 // Start background scheduler only if DB is connected
 if (dbConnected) {
